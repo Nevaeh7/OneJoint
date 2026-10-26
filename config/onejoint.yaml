@@ -1,0 +1,111 @@
+dataset: beauty
+seed: 2020
+reproducibility: true
+log_dir: ./logs/onejoint
+
+map_path: .emb_map.json
+semantic_emb_path: Beauty.emb-llama.npy
+semantic_hidden_size: 128
+
+# Four-level latent semantic identifiers are initialized from item features and trained jointly.
+code_num: 16
+code_length: 4
+training_mode: onejoint
+rqvae_path: null
+end_to_end: true
+joint_optimization: true
+freeze_semantic_embedding: true
+
+mint_stage: 5
+mint_branching: 16
+mint_depth: 4
+mint_router_dim: 128
+mint_candidate_leaves: 64
+mint_semantic_neighbors: 32
+mint_init_lloyd_iterations: 10
+mint_adapter_hidden: 256
+mint_router_dropout: 0.1
+
+mint_critic_hidden: 128
+mint_critic_layers: 2
+mint_critic_heads: 4
+mint_critic_ffn: 512
+mint_critic_dropout: 0.2
+
+mint_generator_lr: 0.001
+mint_router_lr: 0.0001
+mint_adapter_lr: 0.0001
+mint_critic_lr: 0.001
+mint_collaborative_lr: 0.0005
+mint_grad_clip: 1.0
+mint_move_budget_peak: 0.05
+mint_map_move_penalty: 0.25
+mint_enable_map_evolution: true
+
+mint_marginal_scale: 1.0
+mint_critic_scale: 1.0
+mint_projection_scale: 1.0
+mint_ranking_scale: 1.0
+mint_capacity_scale: 1.0
+mint_locality_scale: 1.0
+mint_consistency_scale: 1.0
+mint_entropy_scale: 1.0
+
+mint_rank_negatives: 32
+mint_rank_interval: 2
+mint_rank_batch_fraction: 0.25
+mint_catalog_regularizer_interval: 4
+mint_catalog_regularizer_items: 512
+mint_catalog_refresh_steps: 200
+mint_catalog_refresh_chunk: 256
+mint_log_every: 50
+mint_fail_loss_abs_max: 100.0
+mint_max_eval_batches: 0
+
+epochs: 120
+early_stop: 15
+batch_size: 256
+eval_batch_size: 32
+num_workers: 8
+eval_step: 1
+learner: AdamW
+data_path: ./dataset
+lr_rec: 0.001
+weight_decay: 0.05
+warmup_steps: 500
+lr_scheduler_type: cosine
+gradient_accumulation_steps: 1
+reference_effective_batch_size: 256
+max_train_batches: 0
+stop_after_epoch: -1
+resume_from: ""
+
+# Validation selects the checkpoint. Test evaluation runs once after selection.
+evaluate_test_each_epoch: false
+evaluate_test_at_end: true
+save_test_oracle_best: false
+catalog_constrained_decoding: true
+
+max_his_len: 50
+metrics: recall@1,recall@5,ndcg@5,recall@10,ndcg@10
+valid_metric: ndcg@10
+
+max_length: 210
+encoder_layers: 6
+decoder_layers: 6
+d_model: 128
+d_ff: 512
+num_heads: 4
+d_kv: 64
+dropout_rate: 0.1
+activation_function: relu
+feed_forward_proj: relu
+num_beams: 20
+gradient_checkpointing: true
+
+# OneJoint model fields.
+e_dim: 128
+layers: [128]
+sim: cos
+tau: 0.07
+loss_type: mse

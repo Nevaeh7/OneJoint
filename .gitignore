@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+.pytest_cache/
+dataset/
+outputs/
+logs/
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+*.npy
+*.jsonl
